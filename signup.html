@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white transition-colors duration-300 flex items-center justify-center min-h-screen px-4">
+  <div id="card" class="bg-white p-8 md:p-10 rounded-3xl w-full max-w-md shadow-2xl text-gray-900 transition-colors duration-300">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-3xl font-bold">Sign Up</h1>
+      <button id="toggleMode" class="bg-gray-200 px-3 py-1 rounded-md text-sm">Dark Mode</button>
+    </div>
+
+    <!-- Inputs -->
+    <input id="username" type="text" placeholder="Username" class="w-full mb-4 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-300">
+    <input id="gmail" type="email" placeholder="Email" class="w-full mb-4 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-300">
+    <input id="password" type="password" placeholder="Password" class="w-full mb-4 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-300">
+    <input id="phone" type="text" placeholder="Phone Number" class="w-full mb-6 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-300">
+
+    <!-- Sign Up Button -->
+    <button onclick="signupUser()" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors font-semibold text-lg mb-4">Sign Up</button>
+
+    <!-- SignUp / Login Inline -->
+    <p class="text-center text-gray-500 mb-4">
+      Already have an account? 
+      <a href="login.html" class="text-blue-600 font-semibold hover:underline">Login</a>
+    </p>
+
+    <!-- Social Buttons in Row -->
+    <div class="flex justify-center gap-4">
+      <button class="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors">
+        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/google.svg" class="w-6 h-6" alt="Google">
+      </button>
+      <button class="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors">
+        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" class="w-6 h-6" alt="Facebook">
+      </button>
+      <button class="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors">
+        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" class="w-6 h-6" alt="Instagram">
+      </button>
+      <button class="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors">
+        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/twitter.svg" class="w-6 h-6" alt="Twitter">
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const toggleBtn = document.getElementById('toggleMode');
+    const card = document.getElementById('card');
+    toggleBtn.addEventListener('click', () => {
+      // Toggle body background
+      document.body.classList.toggle('bg-white');
+      document.body.classList.toggle('bg-gray-900');
+      // Toggle card background
+      card.classList.toggle('bg-white');
+      card.classList.toggle('bg-gray-800');
+      // Toggle text color
+      card.classList.toggle('text-gray-900');
+      card.classList.toggle('text-white');
+      toggleBtn.innerText = card.classList.contains('bg-gray-800') ? 'Light Mode' : 'Dark Mode';
+    });
+
+    if (!localStorage.getItem('users')) localStorage.setItem('users', JSON.stringify([]));
+
+    function signupUser() {
+      let username = document.getElementById('username').value.trim();
+      let gmail = document.getElementById('gmail').value.trim();
+      let password = document.getElementById('password').value.trim();
+      let phone = document.getElementById('phone').value.trim();
+
+      if (!username || !gmail || !password || !phone) { alert('Please fill all fields'); return; }
+      if (password.length < 6 || password.length > 20) { alert('Password must be 6-20 characters'); return; }
+
+      let users = JSON.parse(localStorage.getItem('users'));
+      if (users.some(u => u.gmail === gmail && u.password === password)) {
+        alert('User already registered with this Gmail and Password'); return;
+      }
+
+      users.push({ username, gmail, password, phone });
+      localStorage.setItem('users', JSON.stringify(users));
+
+      alert('Signup successful!');
+      location.href = 'login.html';
+    }
+  </script>
+</body>
+</html>

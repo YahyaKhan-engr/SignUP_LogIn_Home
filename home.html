@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white transition-colors duration-300 flex items-center justify-center min-h-screen px-4">
+  <div id="card" class="bg-white p-8 md:p-10 rounded-3xl w-full max-w-md shadow-2xl text-gray-900 text-center transition-colors duration-300">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-3xl font-bold">Dashboard</h1>
+      <button id="toggleMode" class="bg-gray-200 px-3 py-1 rounded-md text-sm">Dark Mode</button>
+    </div>
+
+    <p class="text-lg mb-6">Welcome, <span id="userName"></span>!</p>
+
+    <button onclick="logoutUser()" class="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition-colors font-semibold text-lg mb-4">Logout</button>
+  </div>
+
+  <script>
+    const toggleBtn = document.getElementById('toggleMode');
+    const card = document.getElementById('card');
+    toggleBtn.addEventListener('click', () => {
+      document.body.classList.toggle('bg-white');
+      document.body.classList.toggle('bg-gray-900');
+      card.classList.toggle('bg-white');
+      card.classList.toggle('bg-gray-800');
+      card.classList.toggle('text-gray-900');
+      card.classList.toggle('text-white');
+      toggleBtn.innerText = card.classList.contains('bg-gray-800') ? 'Light Mode' : 'Dark Mode';
+    });
+
+    let isLogin = localStorage.getItem('isLogin');
+    if (!isLogin || isLogin !== 'true') {
+      alert('You are not logged in');
+      location.href = './login.html';
+    } else {
+      let user = JSON.parse(localStorage.getItem('currentUser'));
+      document.getElementById('userName').innerText = user.username;
+    }
+
+    function logoutUser() {
+      localStorage.setItem('isLogin', 'false');
+      localStorage.removeItem('currentUser');
+      location.href = './login.html';
+    }
+  </script>
+</body>
+</html>
